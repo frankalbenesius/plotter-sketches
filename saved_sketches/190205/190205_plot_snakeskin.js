@@ -5,7 +5,7 @@ const { lerp } = require("canvas-sketch-util/math");
 const random = require("canvas-sketch-util/random");
 
 const settings = {
-  dimensions: [1000, 1000],
+  dimensions: "postcard",
   orientation: "landscape",
   pixelsPerInch: 300
 };
@@ -17,7 +17,7 @@ const createGrid = (xCount = 60, yCount = xCount) => {
       const u = xCount <= 1 ? 0.5 : x / (xCount - 1);
       const v = xCount <= 1 ? 0.5 : y / (yCount - 1);
       points.push({
-        noise: random.noise2D(u, v, 0.25, 3), // -1..1
+        noise: random.noise2D(u, v, 0.5, 3), // -1..1
         position: [u, v]
       });
     }
@@ -33,8 +33,8 @@ const sketch = ({ width, height }) => {
   const ratio = width / height;
   const widthPoints = 40;
   const heightPoints = widthPoints * ratio;
-  const points = createGrid(30, 100).filter(
-    point => Math.abs(point.noise) >= 0
+  const points = createGrid(widthPoints, heightPoints).filter(
+    () => random.value() >= 0
   );
 
   points.forEach(point => {
@@ -44,8 +44,8 @@ const sketch = ({ width, height }) => {
     const x = lerp(lerpMargin, width - lerpMargin, u);
     const y = lerp(lerpMargin, height - lerpMargin, v);
 
-    const radius = (rel / 80) * Math.abs(noise);
-    const theta = Math.PI * 2 * Math.min(1.4, Math.max(0.95, Math.abs(noise)));
+    const radius = (rel / 120) * Math.abs(noise) * 5;
+    const theta = Math.PI * 2 * Math.abs(noise);
 
     const line = [
       [x - Math.cos(theta) * radius, y - Math.sin(theta) * radius],

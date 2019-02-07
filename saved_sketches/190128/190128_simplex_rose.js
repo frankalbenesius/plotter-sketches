@@ -10,7 +10,7 @@ const postcardCMs = [15.24, 10.16];
 const settings = {
   dimensions: postcardCMs,
   pixelsPerInch: 300,
-  units: "cm"
+  units: "in"
 };
 
 const sketch = ({ width, height }) => {
@@ -19,16 +19,15 @@ const sketch = ({ width, height }) => {
   // List of polylines for our pen plot
   let lines = [];
 
-  const r = 0.05;
-  const spacing = 0.0011;
+  const r = 0;
+  const spacing = 0.001;
 
   let line = [];
-  for (let i = 100; i < 4096; i++) {
+  for (let i = 100; i < 4000; i++) {
     const angle = 0.05 * i;
-
     const widener = i * spacing + r;
-    const fWidener = simplex.noise2D(i * 100, 0) * 0.2 + widener;
 
+    const fWidener = simplex.noise2D(i * 100, 0) * 0.2 + widener;
     const x = Math.cos(angle) * fWidener + cx;
     const y = Math.sin(angle) * fWidener + cy;
     const point = [x, y];
