@@ -13,9 +13,9 @@ const settings = {
 };
 
 function getCardBackLines(x, y, width, height) {
-  const points = createGrid(14, 21).map(point => {
+  const points = createGrid(10, 15).map(point => {
     const [u, v] = point;
-    const noise = random.noise2D(u, v, 1, 2);
+    const noise = random.noise2D(u, v, 1, 1.3);
     return {
       position: [lerp(x, x + width, u), lerp(y, y + height, v)],
       noise
@@ -26,8 +26,8 @@ function getCardBackLines(x, y, width, height) {
   points.forEach(point => {
     const [x, y] = point.position;
     const noise = point.noise;
-    const r = (1 / 6) * Math.abs(noise) + 0.05;
-    const circleLine = createCircleLine(x, y, r);
+    const r = (1 / 5) * Math.abs(noise) + 0.04;
+    const circleLine = createCircleLine(x, y, r, 4);
     lines.push(circleLine);
   });
 
