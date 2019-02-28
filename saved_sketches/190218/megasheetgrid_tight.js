@@ -9,7 +9,7 @@ import distanceBetweenPoints from "../../util/distanceBetweenPoints";
 import createCircleLine from "../../util/createCircleLine";
 
 const settings = {
-  dimensions: [11, 14],
+  dimensions: [6, 4],
   pixelsPerInch: 300,
   units: "in"
 };
@@ -20,14 +20,14 @@ const sketch = ({ width, height }) => {
   let lines = [];
 
   const margin = Math.min(width, height) * 0.05;
-  const gutter = margin * 0.1;
+  const gutter = margin * 0.3;
 
-  const cols = 22;
-  const rows = 28;
+  const cols = 18;
+  const rows = 12;
   const shiftMultiplier = 0.2;
   const minLines = 2;
   const maxLines = 6;
-  const noiseFrequency = 10;
+  const noiseFrequency = 0.2;
   const noiseAmplitude = 2;
   const doCircles = false;
 

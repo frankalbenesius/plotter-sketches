@@ -2,10 +2,10 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import createGrid from "./util/createGrid";
+import createGrid from "../../util/createGrid";
 import { lerp, clamp } from "canvas-sketch-util/math";
-import logSeed from "./util/logSeed";
-import distanceBetweenPoints from "./util/distanceBetweenPoints";
+import logSeed from "../../util/logSeed";
+import distanceBetweenPoints from "../../util/distanceBetweenPoints";
 
 const settings = {
   dimensions: [6, 4],
@@ -19,7 +19,7 @@ const sketch = ({ width, height }) => {
   let lines = [];
   const margin = Math.min(width, height) * 0.05;
 
-  const cols = 80;
+  const cols = 45;
   const rows = 30;
   const points = createGrid(cols, rows).map(point => {
     const [u, v] = point;
@@ -28,8 +28,8 @@ const sketch = ({ width, height }) => {
     const lerpMargin = margin * 2;
     return {
       position: [
-        lerp(lerpMargin, width - lerpMargin, u + posNoise * 0.05),
-        lerp(lerpMargin, height - lerpMargin, v + posNoise * 0.05)
+        lerp(lerpMargin, width - lerpMargin, u + posNoise * 0.04),
+        lerp(lerpMargin, height - lerpMargin, v + posNoise * 0.04)
       ],
       noise
     };
