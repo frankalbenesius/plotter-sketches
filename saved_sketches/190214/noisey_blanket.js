@@ -2,16 +2,11 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import createGrid from "./util/createGrid";
+import createGrid from "../../util/createGrid";
 import { lerp } from "canvas-sketch-util/math";
-import logSeed from "./util/logSeed";
-import distanceBetweenPoints from "./util/distanceBetweenPoints";
-
-const settings = {
-  dimensions: [6, 4],
-  units: "in",
-  pixelsPerInch: 300
-};
+import logSeed from "../../util/logSeed";
+import distanceBetweenPoints from "../../util/distanceBetweenPoints";
+import settings from "../../util/settings";
 
 const sketch = ({ width, height }) => {
   logSeed();
@@ -23,7 +18,7 @@ const sketch = ({ width, height }) => {
   const rows = 50;
   const points = createGrid(cols, rows).map(point => {
     const [u, v] = point;
-    const noise = random.noise2D(u, v, 2, 3);
+    const noise = random.noise2D(u, v, 1.5, 1);
     return {
       position: [
         lerp(margin * 2, width - margin * 2, u + noise * 0.05),
@@ -51,4 +46,4 @@ const sketch = ({ width, height }) => {
   return props => renderPolylines(lines, props);
 };
 
-canvasSketch(sketch, settings);
+canvasSketch(sketch, settings.envelope);

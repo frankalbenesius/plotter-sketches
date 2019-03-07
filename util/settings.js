@@ -11,5 +11,17 @@ export default {
     dimensions: [3840, 2160],
     orientation: "landscape",
     pixelsPerInch: 72
+  },
+  large: {
+    dimensions: [11, 14],
+    units: "in",
+    orientation: "landscape",
+    pixelsPerInch: 300
+  },
+  envelope: {
+    dimensions: [5.5, 8.5],
+    units: "in",
+    orientation: "landscape",
+    pixelsPerInch: 300
   }
 };
