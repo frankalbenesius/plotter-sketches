@@ -7,12 +7,7 @@ import { lerp, clamp } from "canvas-sketch-util/math";
 import logSeed from "../../util/logSeed";
 import distanceBetweenPoints from "../../util/distanceBetweenPoints";
 import createCircleLine from "../../util/createCircleLine";
-
-const settings = {
-  dimensions: [6, 4],
-  pixelsPerInch: 300,
-  units: "in"
-};
+import { settings } from "../../util";
 
 const sketch = ({ width, height }) => {
   logSeed();
@@ -20,15 +15,15 @@ const sketch = ({ width, height }) => {
   let lines = [];
 
   const margin = Math.min(width, height) * 0.05;
-  const gutter = margin * 0.3;
+  const gutter = margin * 0.25;
 
-  const cols = 9;
-  const rows = 6;
+  const cols = 13;
+  const rows = 10;
   const shiftMultiplier = 0.2;
-  const minLines = 6;
-  const maxLines = 7.5;
+  const minLines = 5;
+  const maxLines = 7;
   const noiseFrequency = 0.04;
-  const noiseAmplitude = 8;
+  const noiseAmplitude = 9;
   const innerNoiseFrequency = 0.4;
   const innerNoiseAmplitude = 6;
   const doCircles = false;
@@ -61,7 +56,7 @@ const sketch = ({ width, height }) => {
   return props => renderPolylines(lines, props);
 };
 
-canvasSketch(sketch, settings);
+canvasSketch(sketch, settings.large);
 
 function createCirclePatchLines(
   cx,
