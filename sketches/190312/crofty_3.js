@@ -2,81 +2,29 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import { lerp, clamp } from "canvas-sketch-util/math";
+import { lerp } from "canvas-sketch-util/math";
 import { settings } from "../../util";
 
 const sketch = ({ width, height }) => {
   let lines = [];
   const margin = Math.max(width, height) / 30;
 
-  const lineCount = 120;
-  const linePointCount = 200;
-
-  let verticalUVLines = [];
-  for (let j = 0; j < lineCount * 0.8; j++) {
-    let u = (1 / lineCount) * j;
-
-    let line = [];
-    for (let k = 0; k < linePointCount; k++) {
-      let v = (1 / linePointCount) * k;
-
-      if (j > 0) {
-        const lastLine = verticalUVLines[j - 1];
-        const lastPoint = lastLine[k];
-        const noise = random.noise2D(u, v, 1, 1 / lineCount);
-        u = lastPoint[0] + 1 / lineCount + noise;
-      }
-
-      line.push([u, v]);
-    }
-
-    verticalUVLines.push(line);
-  }
-
-  lines.push(
-    ...verticalUVLines
-      .map(points => points.map(toActualCoordinates(width, height)))
-      .map((line, i) => {
-        if (i % 2 === 0) {
-          return line;
-        } else {
-          return line.reverse();
-        }
-      })
+  const leftLines = createAdditiveNoiseLines(
+    width * 0.6,
+    0,
+    -width / 2,
+    height
   );
+  lines.push(...leftLines);
 
-  let horizontalUVLines = [];
-  for (let j = 0; j < lineCount * 0.8; j++) {
-    let v = (1 / lineCount) * j;
-
-    let line = [];
-    for (let k = 0; k < linePointCount; k++) {
-      let u = (1 / linePointCount) * k;
-
-      if (j > 0) {
-        const lastLine = horizontalUVLines[j - 1];
-        const lastPoint = lastLine[k];
-        const noise = random.noise2D(u, v, 2, 1 / lineCount);
-        v = lastPoint[1] + 1 / lineCount + noise;
-      }
-
-      line.push([u, v]);
-    }
-
-    horizontalUVLines.push(line);
-  }
-
-  lines.push(
-    ...horizontalUVLines
-      .map(points => points.map(toActualCoordinates(width, height)))
-      .map((line, i) => {
-        if (i % 2 === 0) {
-          return line;
-        } else {
-          return line.reverse();
-        }
-      })
+  const rightLines = createAdditiveNoiseLines(
+    width * 0.6,
+    0,
+    width / 3,
+    height,
+    80
   );
+  lines.push(...rightLines);
 
   lines = lines.filter(() => random.value() > 0.3);
 
@@ -87,9 +35,62 @@ const sketch = ({ width, height }) => {
 
 canvasSketch(sketch, settings.postcard);
 
-function toActualCoordinates(width, height, margin) {
-  return ([u, v]) => {
-    const point = [lerp(0, width - 0, u), lerp(0, height - 0, v)];
-    return point;
-  };
+function createAdditiveNoiseLines(
+  x = 0,
+  y = 0,
+  width = 100,
+  height = 100,
+  lineCount = 100,
+  linePointCount = 200,
+  frequency = 1,
+  amplitude = 1
+) {
+  const randomInstance = random.createRandom();
+  let uvLines = [];
+  for (let j = 0; j < lineCount; j++) {
+    let u = (1 / lineCount) * j;
+    let uvLine = [];
+    for (let k = 0; k < linePointCount; k++) {
+      let v = (1 / linePointCount) * k;
+      if (j > 0) {
+        const lastLine = uvLines[j - 1];
+        const lastPoint = lastLine[k];
+        const noise = randomInstance.noise2D(
+          u,
+          v,
+          frequency,
+          amplitude / lineCount
+        );
+        u = lastPoint[0] + 1 / lineCount + noise;
+      }
+
+      uvLine.push([u, v]);
+    }
+
+    uvLines.push(uvLine);
+  }
+
+  function toActualCoordinates(x, y, width, height, margin = 0) {
+    return ([u, v]) => {
+      const point = [
+        lerp(x + margin, x + width - margin, u),
+        lerp(y + margin, y + height - margin, v)
+      ];
+      return point;
+    };
+  }
+
+  let lines = [];
+  lines.push(
+    ...uvLines
+      .map(points => points.map(toActualCoordinates(x, y, width, height)))
+      .map((line, i) => {
+        if (i % 2 === 0) {
+          return line;
+        } else {
+          return line.reverse();
+        }
+      })
+  );
+  return lines;
 }
