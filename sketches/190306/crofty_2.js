@@ -9,12 +9,12 @@ const sketch = ({ width, height }) => {
   let lines = [];
   const margin = Math.max(width, height) / 30;
 
-  const verticalLineCount = 120;
+  const lineCount = 120;
   const linePointCount = 200;
 
   let verticalUVLines = [];
-  for (let j = 0; j < verticalLineCount * 0.8; j++) {
-    let u = (1 / verticalLineCount) * j;
+  for (let j = 0; j < lineCount * 0.8; j++) {
+    let u = (1 / lineCount) * j;
 
     let line = [];
     for (let k = 0; k < linePointCount; k++) {
@@ -23,8 +23,8 @@ const sketch = ({ width, height }) => {
       if (j > 0) {
         const lastLine = verticalUVLines[j - 1];
         const lastPoint = lastLine[k];
-        const noise = random.noise2D(u, v, 1, 1 / verticalLineCount);
-        u = lastPoint[0] + 1 / verticalLineCount + noise;
+        const noise = random.noise2D(u, v, 1, 1 / lineCount);
+        u = lastPoint[0] + 1 / lineCount + noise;
       }
 
       line.push([u, v]);
@@ -35,6 +35,39 @@ const sketch = ({ width, height }) => {
 
   lines.push(
     ...verticalUVLines
+      .map(points => points.map(toActualCoordinates(width, height)))
+      .map((line, i) => {
+        if (i % 2 === 0) {
+          return line;
+        } else {
+          return line.reverse();
+        }
+      })
+  );
+
+  let horizontalUVLines = [];
+  for (let j = 0; j < lineCount * 0.8; j++) {
+    let v = (1 / lineCount) * j;
+
+    let line = [];
+    for (let k = 0; k < linePointCount; k++) {
+      let u = (1 / linePointCount) * k;
+
+      if (j > 0) {
+        const lastLine = horizontalUVLines[j - 1];
+        const lastPoint = lastLine[k];
+        const noise = random.noise2D(u, v, 2, 1 / lineCount);
+        v = lastPoint[1] + 1 / lineCount + noise;
+      }
+
+      line.push([u, v]);
+    }
+
+    horizontalUVLines.push(line);
+  }
+
+  lines.push(
+    ...horizontalUVLines
       .map(points => points.map(toActualCoordinates(width, height)))
       .map((line, i) => {
         if (i % 2 === 0) {
