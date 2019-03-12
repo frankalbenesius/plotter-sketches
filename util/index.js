@@ -5,6 +5,7 @@ import createCircleLine from "./createCircleLine";
 import distanceBetweenPoints from "./distanceBetweenPoints";
 import logSeed from "./logSeed";
 import settings from "./settings";
+import lineFactory from "./lineFactory";
 
 export {
   createGrid,
@@ -12,5 +13,6 @@ export {
   createCircleLine,
   distanceBetweenPoints,
   logSeed,
-  settings
+  settings,
+  lineFactory
 };
