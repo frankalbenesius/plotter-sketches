@@ -9,62 +9,85 @@ import { settings, distanceBetweenPoints, createCircleLine } from "../../util";
 function createLines(
   pointA = [0, 0],
   pointB = [100, 100],
-  angle = 0,
+  angle = random.value() * Math.PI * 2,
   border = false
 ) {
   let lines = [];
 
+  // define initial utility variables
   const [ax, ay] = pointA;
   const [bx, by] = pointB;
   const centerX = (bx + ax) / 2;
   const centerY = (by + ay) / 2;
   const lineLength = distanceBetweenPoints(pointA, pointB);
-
-  const midpointStart = [
-    centerX + (Math.cos(angle + Math.PI) * lineLength) / 2,
-    centerY + (Math.sin(angle + Math.PI) * lineLength) / 2
-  ];
-  const midpointEnd = [
-    midpointStart[0] + Math.cos(angle) * lineLength,
-    midpointStart[1] + Math.sin(angle) * lineLength
-  ];
-  const midPoints = range(0, 1.000000001, 0.05).map(v => {
-    const x = lerp(midpointStart[0], midpointEnd[0], v);
-    const y = lerp(midpointStart[1], midpointEnd[1], v);
-    return [x, y];
-  });
-
   const lineAngle = angle - Math.PI * 0.5; // "angle" represents angle of growing lines, not the line itself
-  midPoints.forEach(midpoint => {
-    const lineStart = [
-      midpoint[0] - (Math.cos(lineAngle) * lineLength) / 2,
-      midpoint[1] - (Math.sin(lineAngle) * lineLength) / 2
-    ];
-    const lineEnd = [
-      midpoint[0] + (Math.cos(lineAngle) * lineLength) / 2,
-      midpoint[1] + (Math.sin(lineAngle) * lineLength) / 2
-    ];
-    const line = range(0, 1.00000001, 0.05).map(v => {
-      const x = lerp(lineStart[0], lineEnd[0], v);
-      const y = lerp(lineStart[1], lineEnd[1], v);
-      return [x, y];
-    });
-    line.forEach(([x, y]) => {
-      const pointCircle = createCircleLine(x, y, 3);
-      lines.push(pointCircle);
-    });
-    lines.push(line);
-  });
 
+  // can be useful to see border for debugging
   if (border) {
     let borderLine = [[ax, ay], [bx, ay], [bx, by], [ax, by], [ax, ay]];
     lines.push(borderLine);
-    let circle = createCircleLine((bx + ax) / 2, (by + ay) / 2, lineLength / 2);
-    lines.push(circle);
+    // let circle = createCircleLine((bx + ax) / 2, (by + ay) / 2, lineLength / 2);
+    // lines.push(circle);
   }
 
-  // const box = [ax, ay, bx, by];
-  // lines = clipPolylinesToBox(lines, box);
+  // create the starting line at the correct radius and angle.
+  // it will start opposite the "angle" of the flow of the lines
+  // and be just wide enough to cover the entirety of the bounding box
+  const startLineMidpoint = [
+    centerX + (Math.cos(angle + Math.PI) * lineLength) / 2,
+    centerY + (Math.sin(angle + Math.PI) * lineLength) / 2
+  ];
+  const firstLineStartPoint = [
+    startLineMidpoint[0] - (Math.cos(lineAngle) * lineLength) / 2,
+    startLineMidpoint[1] - (Math.sin(lineAngle) * lineLength) / 2
+  ];
+  const firstLineEndPoint = [
+    startLineMidpoint[0] + (Math.cos(lineAngle) * lineLength) / 2,
+    startLineMidpoint[1] + (Math.sin(lineAngle) * lineLength) / 2
+  ];
+  const firstLine = range(0, 1.00000001, 0.01).map(v => {
+    const x = lerp(firstLineStartPoint[0], firstLineEndPoint[0], v);
+    const y = lerp(firstLineStartPoint[1], firstLineEndPoint[1], v);
+    return [x, y];
+  });
+
+  // plotting points just for debugging
+  // firstLine.forEach(([x, y]) => {
+  //   const pointCircle = createCircleLine(x, y, 3);
+  //   lines.push(pointCircle);
+  // });
+
+  // build a second line
+  // TODO: derive this distance
+  const baseLinePadding = 10;
+
+  let noisyLines = [
+    firstLine // straight & not "noisy" but will never be seen;
+  ];
+  let traveledDistance = 0;
+  const maxDistance = lineLength * 0.7; // just cause some white space is more interesting
+  while (traveledDistance < maxDistance) {
+    let newLine = [];
+    const shadowedLine = noisyLines[noisyLines.length - 1];
+    shadowedLine.forEach(([shadowedX, shadowedY]) => {
+      const noise = random.noise2D(shadowedX, shadowedY, 0.01); // abs so it always grows
+      const padding = baseLinePadding + (baseLinePadding / 2) * noise; // we never want it to be totally flat
+      const point = [
+        shadowedX + Math.cos(angle) * padding,
+        shadowedY + Math.sin(angle) * padding
+      ];
+      newLine.push(point);
+    });
+    noisyLines.push(newLine);
+    traveledDistance = Math.abs(
+      distanceBetweenPoints(firstLine[0], newLine[0])
+    );
+  }
+  lines.push(...noisyLines);
+
+  // clip all of the lines to the provided bounding box
+  const box = [ax, ay, bx, by];
+  lines = clipPolylinesToBox(lines, box);
 
   return lines;
 }
@@ -73,10 +96,8 @@ const sketch = ({ width, height }) => {
   let lines = [];
 
   const squigglyLines = createLines(
-    [width * 0.2, height * 0.2],
-    [width * 0.9, height * 0.9],
-    Math.PI * 0.4,
-    true
+    [width * 0.3, height * 0.3],
+    [width * 0.8, height * 0.6]
   );
   lines.push(...squigglyLines);
 
