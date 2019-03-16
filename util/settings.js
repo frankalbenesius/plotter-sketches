@@ -23,5 +23,10 @@ export default {
     units: "in",
     orientation: "landscape",
     pixelsPerInch: 300
+  },
+  macbookScreen: {
+    dimensions: [2880, 1800],
+    orientation: "landscape",
+    pixelsPerInch: 72
   }
 };
