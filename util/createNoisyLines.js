@@ -7,8 +7,10 @@ import { distanceBetweenPoints } from "./";
 export default function createNoisyLines(
   pointA = [0, 0],
   pointB = [100, 100],
-  angle = random.value() * Math.PI * 2,
-  border = false
+  paddingMultiplier = 1,
+  segmentMultiplier = 1,
+  fillRatio = 0.7,
+  angle = random.value() * Math.PI * 2
 ) {
   let lines = [];
 
@@ -19,13 +21,7 @@ export default function createNoisyLines(
   const centerY = (by + ay) / 2;
   const lineLength = distanceBetweenPoints(pointA, pointB);
   const lineAngle = angle - Math.PI * 0.5; // "angle" represents angle of growing lines, not the line itself
-  const baseLinePadding = lineLength / 100;
-
-  // can be useful to see border for debugging
-  if (border) {
-    let borderLine = [[ax, ay], [bx, ay], [bx, by], [ax, by], [ax, ay]];
-    lines.push(borderLine);
-  }
+  const baseLinePadding = (lineLength / 100) * paddingMultiplier;
 
   // create the starting line at the correct radius and angle.
   // it will start opposite the "angle" of the flow of the lines
@@ -42,7 +38,8 @@ export default function createNoisyLines(
     startLineMidpoint[0] + (Math.cos(lineAngle) * lineLength) / 2,
     startLineMidpoint[1] + (Math.sin(lineAngle) * lineLength) / 2
   ];
-  const firstLine = range(0, 1.00000001, 0.01).map(v => {
+  const numLines = Math.round(100 * segmentMultiplier);
+  const firstLine = range(0, 1.00000001, 1 / numLines).map(v => {
     const x = lerp(firstLineStartPoint[0], firstLineEndPoint[0], v);
     const y = lerp(firstLineStartPoint[1], firstLineEndPoint[1], v);
     return [x, y];
@@ -58,7 +55,7 @@ export default function createNoisyLines(
     firstLine // straight & not "noisy" but will never be seen;
   ];
   let traveledDistance = 0;
-  const maxDistance = lineLength * 0.7; // just cause some white space is more interesting
+  const maxDistance = lineLength * fillRatio; // just cause some white space is more interesting
   while (traveledDistance < maxDistance) {
     let newLine = [];
     const shadowedLine = noisyLines[noisyLines.length - 1];
