@@ -10,6 +10,8 @@ export default function createNoisyLines(
   paddingMultiplier = 1,
   segmentMultiplier = 1,
   fillRatio = 0.7,
+  frequency = 1,
+  amplitude = 1,
   angle = random.value() * Math.PI * 2
 ) {
   let lines = [];
@@ -38,7 +40,7 @@ export default function createNoisyLines(
     startLineMidpoint[0] + (Math.cos(lineAngle) * lineLength) / 2,
     startLineMidpoint[1] + (Math.sin(lineAngle) * lineLength) / 2
   ];
-  const numLines = Math.round(100 * segmentMultiplier);
+  const numLines = Math.round(300 * segmentMultiplier);
   const firstLine = range(0, 1.00000001, 1 / numLines).map(v => {
     const x = lerp(firstLineStartPoint[0], firstLineEndPoint[0], v);
     const y = lerp(firstLineStartPoint[1], firstLineEndPoint[1], v);
@@ -60,8 +62,8 @@ export default function createNoisyLines(
     let newLine = [];
     const shadowedLine = noisyLines[noisyLines.length - 1];
     shadowedLine.forEach(([shadowedX, shadowedY]) => {
-      const noise = random.noise2D(shadowedX, shadowedY, 1); // abs so it always grows
-      const padding = baseLinePadding + (baseLinePadding / 2) * noise; // we never want it to be totally flat
+      const noise = random.noise2D(shadowedX, shadowedY, frequency, amplitude); // abs so it always grows
+      const padding = baseLinePadding * 0.8 + (baseLinePadding / 2) * noise; // we never want it to be totally flat
       const point = [
         shadowedX + Math.cos(angle) * padding,
         shadowedY + Math.sin(angle) * padding
