@@ -39,7 +39,7 @@ const sketch = ({ width, height }) => {
     );
   }
 
-  // lines.push(...noisyLines.filter(() => random.value() < 0.8));
+  lines.push(...noisyLines.filter(() => random.value() < 0.8));
 
   // const box = [margin, margin, width - margin, height - margin];
   // lines = clipPolylinesToBox(lines, box);
