@@ -2,16 +2,10 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import createGrid from "./util/createGrid";
 import { lerp, clamp } from "canvas-sketch-util/math";
 import array from "new-array";
 import convexHull from "convexhull-js";
-
-const settings = {
-  dimensions: [6, 4],
-  units: "in",
-  pixelsPerInch: 300
-};
+import { createGrid, settings } from "../../util";
 
 function createGlyphLines(position, meas, noise) {
   const [x, y] = position;
@@ -50,8 +44,8 @@ function createGlyphLines(position, meas, noise) {
 const sketch = ({ width, height }) => {
   const meas = Math.min(width, height) / 13; // a measure for relative calculations
 
-  const rows = 30;
-  const columns = 40;
+  const rows = 40;
+  const columns = 60;
   const margin = Math.min(width, height) / 20;
   const points = createGrid(rows, columns).map(([u, v]) => {
     const x = lerp(margin * 1.5, width - margin * 1.5, u);
@@ -75,4 +69,4 @@ const sketch = ({ width, height }) => {
   return props => renderPolylines(lines, props);
 };
 
-canvasSketch(sketch, settings);
+canvasSketch(sketch, settings.postcard);

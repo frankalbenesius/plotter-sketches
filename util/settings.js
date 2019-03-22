@@ -28,5 +28,10 @@ export default {
     dimensions: [2880, 1800],
     orientation: "landscape",
     pixelsPerInch: 72
+  },
+  pcScreen: {
+    dimensions: [1900, 1080],
+    orientation: "landscape",
+    units: 72
   }
 };

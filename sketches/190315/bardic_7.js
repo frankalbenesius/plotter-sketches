@@ -11,17 +11,17 @@ const sketch = ({ width, height }) => {
   let lines = [];
   const margin = Math.max(width, height) / 30;
 
-  const startAngle = random.value() * Math.PI * 2;
-  for (let i = 0; i < 3; i++) {
-    const angle = startAngle + (i * (Math.PI * 2)) / 3;
+  const startAngle = Math.random() * Math.PI;
+  for (let i = 0; i < 4; i++) {
+    const angle = startAngle + (i * (Math.PI * 2)) / 4;
     lines.push(
       ...createNoisyLines(
         [margin, margin],
         [width - margin, height - margin],
-        1,
-        1,
-        0.5,
-        0.5,
+        0.8,
+        1.5,
+        0.45,
+        random.range(0.3, 0.6),
         1.2,
         angle
       )
@@ -33,4 +33,4 @@ const sketch = ({ width, height }) => {
   return props => renderPolylines(lines, props);
 };
 
-canvasSketch(sketch, settings.postcard);
+canvasSketch(sketch, settings.large);
