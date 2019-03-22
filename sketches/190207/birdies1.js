@@ -42,7 +42,7 @@ const sketch = ({ width, height }) => {
     const x = lerp(lerpMargin, width - lerpMargin, u);
     const y = lerp(lerpMargin, height - lerpMargin, v);
 
-    const radius = (rel / 80) * Math.abs(noise);
+    const radius = (rel / 40) * Math.abs(noise);
     const theta = Math.PI * 2 * noise * 0.03;
 
     const line = [
