@@ -12,6 +12,11 @@ export default {
     orientation: "landscape",
     pixelsPerInch: 72
   },
+  small: {
+    dimensions: [6, 6],
+    units: "in",
+    pixelsPerInch: 300
+  },
   large: {
     dimensions: [11, 14],
     units: "in",
