@@ -9,7 +9,8 @@ const nodeShapes = {
   circle: "circle",
   halfCircle: "halfCircle",
   rectangle: "rectangle",
-  arch: "arch"
+  arch: "arch",
+  tassel: "tassel"
 };
 
 const nodeOptions = [
@@ -30,20 +31,42 @@ const nodeOptions = [
     numLeafOptions: [2]
   }
 ];
+const finisherOptions = [
+  {
+    shape: nodeShapes.tassel,
+    numLeafOptions: [0]
+  },
+  {
+    shape: nodeShapes.circle,
+    numLeafOptions: [0]
+  },
+  {
+    shape: nodeShapes.rectangle,
+    numLeafOptions: [0]
+  }
+];
 
 function generateBrassTreeConfig(
   levelsLeft = 0,
-  levelNodeConfig = random.pick(nodeOptions),
-  levelLeafCount = random.pick(levelNodeConfig.numLeafOptions),
+  nodeConfig = random.pick(nodeOptions),
+  leafCount = random.pick(nodeConfig.numLeafOptions),
   isRootNode = true
 ) {
   if (levelsLeft === 0) {
     return null;
   }
   const leafConfigs = [];
-  const leafNodeConfig = random.pick(nodeOptions);
+
+  let nextLevelsNodeOptions = levelsLeft === 2 ? finisherOptions : nodeOptions;
+  let leafNodeConfig = random.pick(nextLevelsNodeOptions);
+  while (
+    nodeConfig.shape === nodeShapes.rectangle &&
+    leafNodeConfig.shape === nodeConfig.shape
+  ) {
+    leafNodeConfig = random.pick(nextLevelsNodeOptions);
+  }
   const leafNodeLeafCount = random.pick(leafNodeConfig.numLeafOptions);
-  for (let i = 0; i < levelLeafCount; i++) {
+  for (let i = 0; i < leafCount; i++) {
     const leafConfig = generateBrassTreeConfig(
       levelsLeft - 1,
       leafNodeConfig,
@@ -55,7 +78,7 @@ function generateBrassTreeConfig(
     }
   }
   return {
-    ...levelNodeConfig,
+    ...nodeConfig,
     leaves: leafConfigs,
     isRootNode
   };
@@ -190,6 +213,39 @@ function createBrassTreeLines(
       lines.push(rectangleLine);
       break;
     }
+    case nodeShapes.tassel: {
+      const bulbRadius = width * 0.15;
+      const tasselRadius = width * 0.4;
+      nodeHeight = 20; // doesn't matter, last node
+      nodeWidth = 20; //doesn't matter, just not 0
+      const bulbLine = createCircleLine(
+        nodePoint[0],
+        nodePoint[1] + bulbRadius,
+        bulbRadius,
+        30
+      );
+      const theta = Math.PI * (2 / 5);
+      const tasselLine = [
+        [
+          nodePoint[0] + Math.cos(theta) * bulbRadius,
+          nodePoint[1] + Math.sin(theta) * bulbRadius + bulbRadius
+        ],
+        [
+          nodePoint[0] + Math.cos(theta) * tasselRadius,
+          nodePoint[1] + Math.sin(theta) * tasselRadius + bulbRadius
+        ],
+        [
+          nodePoint[0] + Math.cos(Math.PI - theta) * tasselRadius,
+          nodePoint[1] + Math.sin(Math.PI - theta) * tasselRadius + bulbRadius
+        ],
+        [
+          nodePoint[0] + Math.cos(Math.PI - theta) * bulbRadius,
+          nodePoint[1] + Math.sin(Math.PI - theta) * bulbRadius + bulbRadius
+        ]
+      ];
+      lines.push(bulbLine, tasselLine);
+      break;
+    }
     default: {
       console.warn(
         `You either forgot to add a break;, or you haven't set up a rendering plan for this node: ${
@@ -267,26 +323,32 @@ const sketch = ({ width, height }) => {
   let lines = [];
   const brassPairWidth = width / 10;
 
-  createGrid(9, 7).map(([u, v]) => {
-    let shiftedV = v;
-    if (u % 0.25 === 0) {
-      shiftedV += 0.125 / 2;
-    }
-    const x = math.lerp(0, width - 0, u);
-    const y = math.lerp(0, height - 0, shiftedV);
-    const brassLines = createPairBrassLines(
-      [x, y],
-      brassPairWidth,
-      generateBrassTreeConfig(random.rangeFloor(2, 4))
-    );
-    lines.push(...brassLines);
-  });
+  const cols = 9;
+  const rows = 7;
+  for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < rows; row++) {
+      const u = col / cols;
+      let v = row / rows;
+      if (col % 2 === 0) {
+        v = v + 1 / rows / 2;
+      }
 
-  const margin = Math.max(width, height) / 20;
-  const box = [margin * 1.1, margin, width - margin * 1.1, height - margin];
+      const x = math.lerp(0, width - 0, u);
+      const y = math.lerp(0, height - 0, v);
+      const brassLines = createPairBrassLines(
+        [x, y],
+        brassPairWidth,
+        generateBrassTreeConfig(random.rangeFloor(2, 4))
+      );
+      lines.push(...brassLines);
+    }
+  }
+
+  const margin = Math.max(width, height) / 25;
+  const box = [margin, margin, width - margin, height - margin];
   lines = clipPolylinesToBox(lines, box);
   return props => renderPolylines(lines, props);
 };
 
 // WARNING: this sketch only works in "inches"
-canvasSketch(sketch, settings.postcard);
+canvasSketch(sketch, settings.small);
