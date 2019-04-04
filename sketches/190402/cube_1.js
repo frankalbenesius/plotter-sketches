@@ -9,8 +9,8 @@ import math from "mathjs";
 const sketch = ({ width, height }) => {
   let lines = [];
 
-  const rows = 5;
-  const limit = 0.15;
+  const rows = 3;
+  const limit = 0.2;
   const xTheta = random.value() * Math.PI * 2;
   const yTheta = random.value() * Math.PI * 2;
   const zTheta = random.value() * Math.PI * 2;
@@ -18,16 +18,15 @@ const sketch = ({ width, height }) => {
   for (let a = 0; a <= 1; a += 1 / (rows - 1)) {
     for (let b = 0; b <= 1; b += 1 / (rows - 1)) {
       for (let c = 0; c <= 1; c += 1 / (rows - 1)) {
-        const point = [
-          lerp(-limit, limit, a),
-          lerp(-limit, limit, b),
-          lerp(-limit, limit, c)
-        ];
-        const cubeWidth = clamp(
-          math.abs(random.noise3D(...point, 1, 0.03)),
-          0.01,
-          0.03
-        );
+        const point =
+          rows < 2
+            ? [0, 0, 0]
+            : [
+                lerp(-limit, limit, a),
+                lerp(-limit, limit, b),
+                lerp(-limit, limit, c)
+              ];
+        const cubeWidth = 0.3 / rows;
         const cubeLines3d = createCubeLines(point, cubeWidth);
         const rotatedCubeLines3d = rotate3dLinesAboutOrigin(
           cubeLines3d,
@@ -87,29 +86,29 @@ function project3dLines(lines, width, height) {
 }
 
 function rotate3dLinesAboutOrigin(lines, xTheta, yTheta, zTheta) {
-  const xMatrix = math.matrix([
+  const xRotateMatrix = math.matrix([
     [1, 0, 0],
     [0, math.cos(xTheta), -math.sin(xTheta)],
     [0, math.sin(xTheta), math.cos(xTheta)]
   ]);
-  const yMatrix = math.matrix([
+  const yRotateMatrix = math.matrix([
     [math.cos(yTheta), 0, math.sin(yTheta)],
     [0, 1, 0],
     [-math.sin(yTheta), 0, math.cos(yTheta)]
   ]);
-  const zMatrix = math.matrix([
+  const zRotateMatrix = math.matrix([
     [math.cos(zTheta), -math.sin(zTheta), 0],
     [math.sin(zTheta), math.cos(zTheta), 0],
     [0, 0, 1]
   ]);
+  const rotationalMatrix = math.multiply(
+    xRotateMatrix,
+    yRotateMatrix,
+    zRotateMatrix
+  );
   return lines.map(line => {
     return line.map(point => {
-      const rotatedPoint = math
-        .multiply(
-          math.multiply(math.multiply(point, xMatrix), yMatrix),
-          zMatrix
-        )
-        .toArray();
+      const rotatedPoint = math.multiply(point, rotationalMatrix).toArray();
       return rotatedPoint;
     });
   });
