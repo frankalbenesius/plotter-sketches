@@ -9,10 +9,10 @@ const sketch = ({ width, height }) => {
   const margin = Math.max(width, height) * 0.04;
   let lines = [];
 
-  const pieces = 50;
-  const resolution = 30;
-  const donutRadius = Math.min(width, height) * 0.11;
-  createGrid(6, 4).map(([u, v]) => {
+  const pieces = 20;
+  const resolution = 50;
+  const donutRadius = Math.min(width, height) * 0.05;
+  createGrid(12, 8).map(([u, v]) => {
     const point = [
       lerp(margin, width - margin, u),
       lerp(margin, height - margin, v)
@@ -46,7 +46,7 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
     );
     const noisyOutline = simpleOutline.map(targetPoint => {
       const noise = Math.abs(
-        random.noise2D(targetPoint[0], targetPoint[1], 0.2, 1.1)
+        random.noise2D(targetPoint[0], targetPoint[1], 0.15, 0.5)
       );
       const noisedPoint = [
         lerp(centerX, targetPoint[0], noise),
