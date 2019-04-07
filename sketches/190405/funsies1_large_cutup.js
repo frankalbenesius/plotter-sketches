@@ -9,23 +9,23 @@ const sketch = ({ width, height }) => {
   let lines = [];
 
   const parts = 160;
-  const resolution = 120;
+  const resolution = 20;
 
   const donutRadius = Math.min(width, height) * random.range(0.2, 0.25);
-  const donutLinesA = createDonutLines(
+  const donutLinesA = createSplitDonutLines(
     [width * 0.66, height * random.range(0.4, 0.6)],
     parts,
     resolution,
     donutRadius
   );
-  lines.push(...donutLinesA);
-  const donutLinesB = createDonutLines(
+  lines.push(...donutLinesA.filter(() => random.value() > 0.08));
+  const donutLinesB = createSplitDonutLines(
     [width * 0.35, height * random.range(0.4, 0.6)],
     parts,
     resolution,
     donutRadius
   );
-  lines.push(...donutLinesB);
+  lines.push(...donutLinesB.filter(() => random.value() > 0.08));
 
   // const margin = Math.max(width, height) / 20;
   // const box = [margin, margin, width - margin, height - margin];
@@ -33,7 +33,7 @@ const sketch = ({ width, height }) => {
   return props => renderPolylines(lines, props);
 };
 
-function createDonutLines(centerPoint, pieces, resolution, radius) {
+function createSplitDonutLines(centerPoint, pieces, resolution, radius) {
   let donutLines = [];
 
   const circlePoints = createCircleLine(
@@ -62,6 +62,8 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
       ];
       return noisedPoint;
     });
+    // const noisyLines = []
+    // const
     donutLines.push(noisyOutline);
   });
 

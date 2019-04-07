@@ -8,24 +8,21 @@ import { settings, createCircleLine } from "../../util";
 const sketch = ({ width, height }) => {
   let lines = [];
 
-  const parts = 160;
+  const parts = 120;
   const resolution = 120;
 
-  const donutRadius = Math.min(width, height) * random.range(0.2, 0.25);
-  const donutLinesA = createDonutLines(
-    [width * 0.66, height * random.range(0.4, 0.6)],
-    parts,
-    resolution,
-    donutRadius
-  );
-  lines.push(...donutLinesA);
-  const donutLinesB = createDonutLines(
-    [width * 0.35, height * random.range(0.4, 0.6)],
-    parts,
-    resolution,
-    donutRadius
-  );
-  lines.push(...donutLinesB);
+  const donutRadius = Math.min(width, height) * random.range(0.15, 0.2);
+  createCircleLine(
+    width * 0.5,
+    height * 0.5,
+    height * 0.2,
+    3,
+    random.value() * Math.PI * 2
+  ).forEach((point, i) => {
+    if (i < 3) {
+      lines.push(...createDonutLines(point, parts, resolution, donutRadius));
+    }
+  });
 
   // const margin = Math.max(width, height) / 20;
   // const box = [margin, margin, width - margin, height - margin];
@@ -54,7 +51,7 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
     );
     const noisyOutline = simpleOutline.map(targetPoint => {
       const noise = Math.abs(
-        random.noise2D(targetPoint[0], targetPoint[1], 0.08, 1.1)
+        random.noise2D(targetPoint[0], targetPoint[1], 0.1, 1)
       );
       const noisedPoint = [
         lerp(centerX, targetPoint[0], noise),
