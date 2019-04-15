@@ -6,13 +6,13 @@ import { lerp } from "canvas-sketch-util/math";
 import { settings, createCircleLine, createGrid } from "../../util";
 
 const sketch = ({ width, height }) => {
-  const margin = Math.max(width, height) * 0.04;
+  const margin = Math.max(width, height) * 0.12;
   let lines = [];
 
-  const pieces = 50;
-  const resolution = 30;
-  const donutRadius = Math.min(width, height) * 0.11;
-  createGrid(6, 4).map(([u, v]) => {
+  const pieces = 90;
+  const resolution = 140;
+  const donutRadius = Math.min(width, height) * 0.06;
+  createGrid(6, 5).map(([u, v]) => {
     const point = [
       lerp(margin, width - margin, u),
       lerp(margin, height - margin, v)
@@ -20,8 +20,8 @@ const sketch = ({ width, height }) => {
     lines.push(...createDonutLines(point, pieces, resolution, donutRadius));
   });
 
-  const box = [margin, margin, width - margin, height - margin];
-  lines = clipPolylinesToBox(lines, box);
+  // const box = [margin, margin, width - margin, height - margin];
+  // lines = clipPolylinesToBox(lines, box);
   return props => renderPolylines(lines, props);
 };
 
@@ -46,7 +46,7 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
     );
     const noisyOutline = simpleOutline.map(targetPoint => {
       const noise = Math.abs(
-        random.noise2D(targetPoint[0], targetPoint[1], 0.2, 1.1)
+        random.noise2D(targetPoint[0], targetPoint[1], 0.3, 1)
       );
       const noisedPoint = [
         lerp(centerX, targetPoint[0], noise),
@@ -60,4 +60,4 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
   return donutLines;
 }
 
-canvasSketch(sketch, settings.postcard);
+canvasSketch(sketch, settings.large);
