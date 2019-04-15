@@ -5,7 +5,8 @@ export default {
   postcard: {
     dimensions: [6, 4],
     units: "in",
-    pixelsPerInch: 300
+    pixelsPerInch: 300,
+    scaleToView: true
   },
   workScreen: {
     dimensions: [3840, 2160],
@@ -21,13 +22,15 @@ export default {
     dimensions: [11, 14],
     units: "in",
     orientation: "landscape",
-    pixelsPerInch: 300
+    pixelsPerInch: 300,
+    scaleToView: true
   },
   envelope: {
     dimensions: [5.5, 8.5],
     units: "in",
     orientation: "landscape",
-    pixelsPerInch: 300
+    pixelsPerInch: 300,
+    scaleToView: true
   },
   macbookScreen: {
     dimensions: [2880, 1800],

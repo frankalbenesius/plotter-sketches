@@ -6,6 +6,7 @@ import distanceBetweenPoints from "./distanceBetweenPoints";
 import logSeed from "./logSeed";
 import settings from "./settings";
 import lineFactory from "./lineFactory";
+import createNoisyLines from "./createNoisyLines";
 
 export {
   createGrid,
@@ -14,5 +15,6 @@ export {
   distanceBetweenPoints,
   logSeed,
   settings,
-  lineFactory
+  lineFactory,
+  createNoisyLines
 };
