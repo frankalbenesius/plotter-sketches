@@ -2,10 +2,9 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import distanceBetweenPoints from "./util/distanceBetweenPoints";
-import logSeed from "./util/logSeed";
-import { lerp, clamp } from "canvas-sketch-util/math";
+import { lerp } from "canvas-sketch-util/math";
 import array from "new-array";
+import { logSeed, distanceBetweenPoints } from "../../util";
 
 const settings = {
   dimensions: [6, 4],

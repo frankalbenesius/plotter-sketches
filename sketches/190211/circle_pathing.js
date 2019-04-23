@@ -2,8 +2,7 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import distanceBetweenPoints from "./util/distanceBetweenPoints";
-import logSeed from "./util/logSeed";
+import { logSeed, distanceBetweenPoints } from "../../util";
 import { lerp } from "canvas-sketch-util/math";
 import array from "new-array";
 
