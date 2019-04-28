@@ -2,6 +2,12 @@ export default {
   playground: {
     dimensions: [1024, 1024]
   },
+  businessCard: {
+    dimensions: [3.5, 2],
+    units: "in",
+    pixelsPerInch: 300,
+    scaleToView: true
+  },
   postcard: {
     dimensions: [6, 4],
     units: "in",
