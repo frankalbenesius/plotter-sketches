@@ -17,8 +17,8 @@ const sketch = ({ width, height }) => {
   // ];
   // lines.push(boundingLine);
 
-  const columns = 15;
-  const rows = 15;
+  const columns = 12;
+  const rows = 12;
   const facesGutter = margin * 0.1;
   const faceWidth =
     (width - margin * 2 - facesGutter * (columns - 1)) / columns;
@@ -27,7 +27,7 @@ const sketch = ({ width, height }) => {
   createGrid(columns, rows)
     .map(uv => {
       const [u, v] = uv;
-      const lookAngle = random.noise2D(u, v, 0.5, 1) * Math.PI * 2;
+      const lookAngle = random.noise2D(u, v, 0.2, 1) * Math.PI * 2;
       const eyeballNoise = random.noise2D(u + 100000, v + 999999, 1, 1);
       const mouthNoise = random.noise2D(u - 100000, v - 999999, 0.1, 1);
       return {
