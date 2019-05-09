@@ -3,43 +3,47 @@ import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
 import { lerp } from "canvas-sketch-util/math";
-import { settings, createCircleLine, logSeed } from "../../util";
+import { settings, createCircleLine } from "../../util";
 
 const sketch = ({ width, height }) => {
   let lines = [];
 
-  const parts = 120;
-  const resolution = 120;
+  const donutConfig = {
+    center: [width * 0.5, height * 0.5],
+    lines: 100,
+    resolution: 4,
+    radius: Math.min(width, height) * 0.25,
+    amplitude: 0.1,
+    frequency: 0.4
+  };
+  const donutLines = createDonutLines(donutConfig);
+  lines.push(...donutLines);
 
-  const donutRadius = Math.min(width, height) * random.range(0.2, 0.4);
-  const donutLinesA = createDonutLines(
-    [width * 0.66, height * random.range(0.4, 0.6)],
-    parts,
-    resolution,
-    donutRadius
-  );
-  lines.push(...donutLinesA);
-  const donutLinesB = createDonutLines(
-    [width * 0.35, height * random.range(0.4, 0.6)],
-    parts,
-    resolution,
-    donutRadius
-  );
-  lines.push(...donutLinesB);
-
-  const margin = Math.max(width, height) / 20;
+  const margin = Math.max(width, height) * 0.05;
   const box = [margin, margin, width - margin, height - margin];
   lines = clipPolylinesToBox(lines, box);
   return props => renderPolylines(lines, props);
 };
 
-function createDonutLines(centerPoint, pieces, resolution, radius) {
+const defaultConfig = {
+  center: [0.5, 0.5],
+  lines: 100,
+  resolution: 400,
+  radius: 1,
+  amplitude: 0.04,
+  frequency: 1
+};
+function createDonutLines(config = defaultConfig) {
+  const { center, lines, resolution, radius, amplitude, frequency } = {
+    ...defaultConfig,
+    ...config
+  };
   let donutLines = [];
 
   const circlePoints = createCircleLine(
-    ...centerPoint,
+    ...center,
     radius,
-    pieces,
+    lines,
     random.value() * 2 * Math.PI
   );
 
@@ -49,11 +53,12 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
       circleCenter[0],
       circleCenter[1],
       radius,
-      resolution
+      resolution,
+      random.value() * Math.PI * 2
     );
     const noisyOutline = simpleOutline.map(targetPoint => {
       const noise = Math.abs(
-        random.noise2D(targetPoint[0], targetPoint[1], 0.08, 1.1)
+        random.noise2D(targetPoint[0], targetPoint[1], amplitude, frequency)
       );
       const noisedPoint = [
         lerp(centerX, targetPoint[0], noise),
@@ -67,4 +72,4 @@ function createDonutLines(centerPoint, pieces, resolution, radius) {
   return donutLines;
 }
 
-canvasSketch(sketch, settings.large);
+canvasSketch(sketch, settings.postcard);
