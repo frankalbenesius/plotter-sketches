@@ -7,6 +7,8 @@ import logSeed from "./logSeed";
 import settings from "./settings";
 import lineFactory from "./lineFactory";
 import createNoisyLines from "./createNoisyLines";
+import orthographicProjection from "./orthographicProjection";
+import rotate3dLinesAboutOrigin from "./rotate3dLinesAboutOrigin";
 
 export {
   createGrid,
@@ -16,5 +18,7 @@ export {
   logSeed,
   settings,
   lineFactory,
-  createNoisyLines
+  createNoisyLines,
+  orthographicProjection,
+  rotate3dLinesAboutOrigin
 };
