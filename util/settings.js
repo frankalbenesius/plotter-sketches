@@ -47,5 +47,12 @@ export default {
     dimensions: [1900, 1080],
     orientation: "landscape",
     units: 72
+  },
+  postalSticker: {
+    dimensions: [4.5, 5.75],
+    units: "in",
+    orientation: "landscape",
+    pixelsPerInch: 300,
+    scaleToView: true
   }
 };
