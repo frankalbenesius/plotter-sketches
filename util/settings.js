@@ -8,6 +8,12 @@ export default {
     pixelsPerInch: 300,
     scaleToView: true
   },
+  sixBySixSheet: {
+    dimensions: [6, 6],
+    units: "in",
+    pixelsPerInch: 300,
+    scaleToView: true
+  },
   postcard: {
     dimensions: [6, 4],
     units: "in",
