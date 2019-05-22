@@ -7,9 +7,8 @@ import { lerp } from "canvas-sketch-util/math";
 import {
   settings,
   createCircleLine,
-  rotate3DLines,
-  projectUVLines,
-  createGrid
+  createGrid,
+  createSphere
 } from "../../util";
 
 const sketch = ({ width, height }) => {
@@ -62,48 +61,3 @@ const sketch = ({ width, height }) => {
 };
 
 canvasSketch(sketch, settings.postcard);
-
-function createSphere(shellConfig) {
-  const {
-    shellLines,
-    shells,
-    center,
-    radius,
-    arcSteps,
-    arcLength,
-    rotation
-  } = shellConfig;
-
-  let lines3D = [];
-
-  for (let j = 0; j < shells; j++) {
-    let shellLines3D = [];
-    const shellRadius = 0.5; // half of UV space between 0 and 1
-
-    for (let i = 1; i < shellLines; i++) {
-      const depth = lerp(0.5 - shellRadius, 0.5 + shellRadius, i / shellLines);
-      const arcLineRadius = Math.sqrt(
-        Math.pow(shellRadius, 2) - Math.pow(shellRadius - depth, 2)
-      );
-      const arcLine2D = createCircleLine(
-        0.5,
-        0.5,
-        arcLineRadius,
-        arcSteps,
-        0,
-        arcSteps * arcLength
-      );
-      const arcLine3D = arcLine2D.map(([x, y]) => [x, y, depth]);
-      shellLines3D.push(arcLine3D);
-    }
-
-    const uvCenter = [0.5, 0.5, 0.5];
-    const rotatedShellLines3D = rotate3DLines(shellLines3D, rotation, uvCenter);
-    lines3D.push(...rotatedShellLines3D);
-  }
-
-  // plot every other line in reverse for efficiency's sake
-  return projectUVLines(lines3D, center, radius * 2).map(reverseEveryOther);
-}
-
-const reverseEveryOther = (line, i) => (i % 2 === 0 ? line.reverse() : line);

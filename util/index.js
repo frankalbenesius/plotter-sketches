@@ -7,6 +7,7 @@ import logSeed from "./logSeed";
 import settings from "./settings";
 import lineFactory from "./lineFactory";
 import createNoisyLines from "./createNoisyLines";
+import createSphere from "./createSphere";
 import orthographicProjection, {
   projectUVLines
 } from "./orthographicProjection";
@@ -23,5 +24,6 @@ export {
   createNoisyLines,
   orthographicProjection,
   projectUVLines,
-  rotate3DLines
+  rotate3DLines,
+  createSphere
 };
