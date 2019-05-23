@@ -6,7 +6,6 @@ import { createCircleLine, rotate3DLines, projectUVLines } from "./";
 const configDefaults = {
   frequency: 1,
   amplitude: 0,
-  amplitudeClamp: 1,
   shells: 1,
   rotation: undefined,
   shellLines: 50,
@@ -27,13 +26,13 @@ export default function createSphere(shellConfig) {
     rotation,
     frequency,
     amplitude,
-    amplitudeClamp,
     seed
   } = {
     ...configDefaults,
     ...shellConfig
   };
   const noiseRandom = random.createRandom(seed || random.getRandomSeed());
+  const amplitudeClamp = shellConfig.amplitudeClamp || shellConfig.amplitude;
 
   let lines3D = [];
 
@@ -59,7 +58,15 @@ export default function createSphere(shellConfig) {
       const noisyArcLine3d = arcLine3D.map(point3D => {
         const noise = noiseRandom.noise3D(...point3D, frequency, amplitude);
         const clampedNoise = clamp(noise, -amplitudeClamp, amplitudeClamp);
-        return point3D.map(x => x + clampedNoise);
+
+        const [x, y, z] = point3D;
+        const factor = 0.1;
+        const newX = lerp(0.5, x, clampedNoise * factor + 1);
+        const newY = lerp(0.5, y, clampedNoise * factor + 1);
+        const newZ = lerp(0.5, z, clampedNoise * factor + 1);
+
+        const newPoint = [newX, newY, newZ];
+        return newPoint;
       });
 
       shellLines3D.push(noisyArcLine3d);
