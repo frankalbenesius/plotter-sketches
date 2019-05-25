@@ -60,7 +60,7 @@ export default function createSphere(shellConfig) {
         const clampedNoise = clamp(noise, -amplitudeClamp, amplitudeClamp);
 
         const [x, y, z] = point3D;
-        const factor = 0.1;
+        const factor = 0.15;
         const newX = lerp(0.5, x, clampedNoise * factor + 1);
         const newY = lerp(0.5, y, clampedNoise * factor + 1);
         const newZ = lerp(0.5, z, clampedNoise * factor + 1);
