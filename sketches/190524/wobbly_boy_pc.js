@@ -8,32 +8,39 @@ import { settings, createSphere, createGrid } from "../../util";
 const sketch = ({ width, height }) => {
   let lines = [];
 
-  const sphereLines = createSphere({
-    center: [width * 0.5, height * 0.5],
-    radius: Math.min(width, height) * 0.4,
-    frequency: 4,
-    amplitude: 1,
-    shellLines: 400,
-    arcSteps: 100,
-    arcLength: 1,
-    rotation: {
-      x: Math.PI * 0.5,
-      y: 0,
-      z: Math.PI * 2 * random.value()
-    }
-  });
+  lines.push(
+    ...createSphere({
+      center: [width * 0.5, height * 0.5],
+      radius: Math.min(width, height) * 0.45,
+      frequency: 5,
+      amplitude: 0.25,
+      shellLines: 120,
+      arcSteps: 100,
+      arcLength: 1,
+      fillLength: 0.5
+    })
+  );
 
-  lines.push(...sphereLines);
+  lines.push(
+    ...createSphere({
+      center: [width * 0.5, height * 0.5],
+      radius: Math.min(width, height) * 0.4,
+      frequency: 5,
+      amplitude: 0.25,
+      shellLines: 80,
+      arcSteps: 100,
+      arcLength: 1,
+      fillLength: 0.5
+    })
+  );
 
   // const margin = Math.max(width, height) / 20;
   // const box = [margin, margin, width - margin, height - margin];
   // lines = clipPolylinesToBox(lines, box);
   return props =>
     renderPolylines(lines, {
-      ...props,
-      foreground: "#cc5500",
-      background: "#e0d668"
+      ...props
     });
 };
 
-canvasSketch(sketch, settings.playground);
+canvasSketch(sketch, settings.postcard);

@@ -10,7 +10,8 @@ const configDefaults = {
   rotation: undefined,
   shellLines: 50,
   arcSteps: 50,
-  arcLength: 1
+  arcLength: 1,
+  fillLength: 1
 };
 
 const UV_ORIGIN = [0.5, 0.5, 0.5];
@@ -26,7 +27,8 @@ export default function createSphere(shellConfig) {
     rotation,
     frequency,
     amplitude,
-    seed
+    seed,
+    fillLength
   } = {
     ...configDefaults,
     ...shellConfig
@@ -40,7 +42,8 @@ export default function createSphere(shellConfig) {
     let shellLines3D = [];
     const shellRadius = 0.5; // half of UV space between 0 and 1
 
-    for (let i = 0; i <= shellLines; i++) {
+    const shellLinesCount = Math.ceil(shellLines * fillLength);
+    for (let i = 0; i <= shellLinesCount; i++) {
       const depth = lerp(0.5 - shellRadius, 0.5 + shellRadius, i / shellLines);
       const arcLineRadius = Math.sqrt(
         Math.pow(shellRadius, 2) - Math.pow(shellRadius - depth, 2)
