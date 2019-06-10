@@ -2,6 +2,9 @@ export default {
   playground: {
     dimensions: [1024, 1024]
   },
+  instagram: {
+    dimensions: [1080, 1080]
+  },
   businessCard: {
     dimensions: [3.5, 2],
     units: "in",

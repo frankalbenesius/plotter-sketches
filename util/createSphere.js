@@ -11,7 +11,8 @@ const configDefaults = {
   shellLines: 50,
   arcSteps: 50,
   arcLength: 1,
-  fillLength: 1
+  fillLength: 1,
+  t: 0 // for animation
 };
 
 const UV_ORIGIN = [0.5, 0.5, 0.5];
@@ -28,7 +29,8 @@ export default function createSphere(shellConfig) {
     frequency,
     amplitude,
     seed,
-    fillLength
+    fillLength,
+    t
   } = {
     ...configDefaults,
     ...shellConfig
@@ -59,7 +61,7 @@ export default function createSphere(shellConfig) {
       const arcLine3D = arcLine2D.map(([x, y]) => [x, y, depth]);
 
       const noisyArcLine3d = arcLine3D.map(point3D => {
-        const noise = noiseRandom.noise3D(...point3D, frequency, amplitude);
+        const noise = noiseRandom.noise4D(...point3D, t, frequency, amplitude);
         const clampedNoise = clamp(noise, -amplitudeClamp, amplitudeClamp);
 
         const [x, y, z] = point3D;
