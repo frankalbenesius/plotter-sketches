@@ -8,7 +8,9 @@ export default function createDonutLines(
   resolution,
   radius,
   seed = random.getRandomSeed(),
-  t = 0
+  t = 0,
+  frequency = 0.0012,
+  amplitude = 1.1
 ) {
   let donutLines = [];
   random.setSeed(seed);
@@ -31,7 +33,7 @@ export default function createDonutLines(
     );
     const noisyOutline = simpleOutline.map(targetPoint => {
       const noise = Math.abs(
-        random.noise3D(targetPoint[0], targetPoint[1], t, 0.0012, 1.1)
+        random.noise3D(targetPoint[0], targetPoint[1], t, frequency, amplitude)
       );
       const noisedPoint = [
         lerp(centerX, targetPoint[0], noise),
