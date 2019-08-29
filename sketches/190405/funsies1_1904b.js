@@ -10,8 +10,8 @@ const sketch = ({ width, height }) => {
   const parts = 150;
   const resolution = 80;
   const radius = Math.min(width, height) * 0.09;
-  const frequency = 0.0008;
-  const amplitude = 1.1;
+  const frequency = 0.002;
+  const amplitude = 1;
 
   const baseX = width * 0.35;
   const baseY = height * 0.5;
