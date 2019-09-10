@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "sketch.js",
-  "scripts": {},
+  "scripts": {
+    "paper": "parcel src/index.html"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,6 +21,7 @@
     "mathjs": "^5.8.0",
     "new-array": "^1.0.0",
     "paper": "^0.12.3",
+    "parcel-bundler": "^1.12.3",
     "polygon-clipping": "^0.14.0",
     "simplex-noise": "^2.4.0"
   }
