@@ -20,12 +20,12 @@ window.onload = function() {
   bounds.strokeColor = "blue";
 
   const armWidth = meas * 1;
-  const maxArmAngle = 20;
-  const freq = 2;
-  const amp = 1;
+  const maxArmAngle = 17;
+  const freq = 1;
+  const amp = 1.5;
 
-  const cols = 20;
-  const rows = 9;
+  const cols = 21;
+  const rows = 10;
 
   const strokedArms = [];
   for (let y = rows - 1; y > 0; y--) {
@@ -38,7 +38,7 @@ window.onload = function() {
       const armPath = createArmPath(
         new paper.Point(
           math.lerp(0, width, u),
-          math.lerp(0, height, v) + armWidth * 0
+          math.lerp(0, height, v) + armWidth * 10
         ),
         armWidth,
         armAngle,
@@ -195,7 +195,7 @@ function createFingerPath(pt, width, length, angle) {
 function getHandPoints(armOriginPt, armWidth) {
   const armPt = new paper.Point(armOriginPt);
   const wristPt = new paper.Point(armPt);
-  wristPt.y -= armWidth * 2;
+  wristPt.y -= armWidth * 10;
 
   const palmPt = new paper.Point(wristPt);
   palmPt.y -= armWidth * 0.35;
@@ -224,29 +224,3 @@ function getHandPoints(armOriginPt, armWidth) {
     thumb: thumbPt
   };
 }
-
-// let armA = createArmPath(
-//   new paper.Point(width * 0.47, height * 0.65),
-//   width * 0.06,
-//   15
-// );
-// armA.strokeColor = "green";
-
-// let armB = createArmPath(
-//   new paper.Point(width * 0.53, height * 0.65),
-//   width * 0.06,
-//   -15
-// );
-// armB.strokeColor = "black";
-
-// let newA = armA.subtract(armB);
-// newA.strokeColor = "black";
-// armA.remove();
-// // armB.remove();
-
-// // const thing = bounds.intersect(result);
-// let newerA = bounds.intersect(newA);
-// newA.remove();
-// // thing.remove();
-// // result.remove();
-// bounds.remove();
