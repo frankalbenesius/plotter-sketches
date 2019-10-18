@@ -1,4 +1,9 @@
 export default {
+  inktober: {
+    dimensions: [4.25, 4.25],
+    units: "in",
+    pixelsPerInch: 300
+  },
   playground: {
     dimensions: [1024, 1024]
   },
