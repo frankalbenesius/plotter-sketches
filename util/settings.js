@@ -1,4 +1,9 @@
 export default {
+  tshirt: {
+    dimensions: [11, 11],
+    units: "in",
+    pixelsPerInch: 300
+  },
   inktober: {
     dimensions: [4.25, 4.25],
     units: "in",

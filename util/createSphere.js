@@ -45,7 +45,7 @@ export default function createSphere(shellConfig) {
     const shellRadius = 0.5; // half of UV space between 0 and 1
 
     const shellLinesCount = Math.ceil(shellLines * fillLength);
-    for (let i = 0; i <= shellLinesCount; i++) {
+    for (let i = 1; i < shellLinesCount; i++) {
       const depth = lerp(0.5 - shellRadius, 0.5 + shellRadius, i / shellLines);
       const arcLineRadius = Math.sqrt(
         Math.pow(shellRadius, 2) - Math.pow(shellRadius - depth, 2)

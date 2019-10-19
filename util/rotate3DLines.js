@@ -50,6 +50,7 @@ export function rotate3dLinesAboutOrigin(
   yTheta = random.value() * Math.PI * 2,
   zTheta = random.value() * Math.PI * 2
 ) {
-  return rotate3dLines(lines, { x: xTheta, y: yTheta, z: zTheta }, [0, 0]);
+  return rotate3DLines(lines, { x: xTheta, y: yTheta, z: zTheta }, [0, 0]);
 }
+
 export default rotate3dLinesAboutOrigin;
