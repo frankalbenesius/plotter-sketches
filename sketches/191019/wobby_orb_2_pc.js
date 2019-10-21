@@ -12,8 +12,8 @@ const sketch = ({ width, height }) => {
     ...createSphere({
       center: [width * 0.5, height * 0.5],
       radius: Math.min(width, height) * 0.45,
-      frequency: 3,
-      amplitude: 0.5,
+      frequency: 2,
+      amplitude: 1,
       shellLines: 75,
       arcSteps: 100,
       arcLength: 1,
