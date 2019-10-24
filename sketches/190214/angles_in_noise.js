@@ -23,21 +23,23 @@ const sketch = ({ width, height }) => {
   });
 
   points.forEach(({ position, noise }) => {
-    const [x, y] = position;
+    if (Math.abs(noise) > 0.5) {
+      const [x, y] = position;
 
-    const adjX = x + noise * margin * 1.2;
-    const line = [
-      [adjX, y],
-      [adjX + margin * 0.75 * noise, y],
-      [adjX + margin * 0.9 * noise, y + noise * margin]
-    ];
-    lines.push(line);
+      const adjX = x + noise * margin * 1.2;
+      const line = [
+        [adjX, y],
+        [adjX + margin * 0.75 * noise, y],
+        [adjX + margin * 0.9 * noise, y + noise * margin]
+      ];
+      lines.push(line);
 
-    const adjY = y + noise * margin;
-    const diagonalLine = [
-      [x + noise / 20, adjY],
-      [x + noise / 20, adjY + margin * 0.75 * noise]
-    ];
+      const adjY = y + noise * margin;
+      const diagonalLine = [
+        [x + noise / 20, adjY],
+        [x + noise / 20, adjY + margin * 0.75 * noise]
+      ];
+    }
     // lines.push(verticalLine);
   });
 

@@ -14,7 +14,7 @@ import {
 const sketch = ({ width, height }) => {
   const freq = 0.1;
   const amp = 1;
-  const cols = 12;
+  const cols = 30;
   const shellLines = 10;
   const shells = 1; // doesn't do much yet
   const arcSteps = 100;

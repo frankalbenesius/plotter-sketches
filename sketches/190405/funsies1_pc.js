@@ -8,7 +8,7 @@ import { settings, createCircleLine } from "../../util";
 const sketch = ({ width, height }) => {
   let lines = [];
 
-  const parts = 160;
+  const parts = 140;
   const resolution = 120;
 
   const donutRadius = Math.min(width, height) * random.range(0.2, 0.25);

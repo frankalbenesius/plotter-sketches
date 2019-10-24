@@ -17,14 +17,14 @@ const sketch = ({ width, height }) => {
   logSeed();
 
   let lines = [];
-  const margin = Math.min(width, height) * 0.05;
+  const margin = Math.min(width, height) * 0.02;
 
-  const cols = 45;
-  const rows = 30;
+  const cols = 90;
+  const rows = 60;
   const points = createGrid(cols, rows).map(point => {
     const [u, v] = point;
-    const noise = random.noise2D(u, v, 2.5, 6);
-    const posNoise = clamp(noise, 0, 0.4);
+    const noise = random.noise2D(u, v, 3, 6);
+    const posNoise = clamp(noise, 0, 0.2);
     const lerpMargin = margin * 2;
     return {
       position: [
@@ -54,6 +54,7 @@ const sketch = ({ width, height }) => {
   }
 
   const box = [margin, margin, width - margin, height - margin];
+  lines = lines.filter(() => Math.random() > 0.3);
   lines = clipPolylinesToBox(lines, box);
   return props => renderPolylines(lines, props);
 };
