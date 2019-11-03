@@ -11,8 +11,8 @@ const sketch = ({ width, height }) => {
   lines.push(
     ...createSphere({
       center: [width * 0.5, height * 0.5],
-      radius: Math.min(width, height) * 0.45,
-      frequency: 6,
+      radius: width * 0.4,
+      frequency: 4,
       amplitude: 1,
       shellLines: 100,
       arcSteps: 200,
@@ -23,13 +23,14 @@ const sketch = ({ width, height }) => {
 
   return props =>
     renderPolylines(lines, {
-      ...props
+      ...props,
+      lineWidth: 0.3
     });
 };
 
 canvasSketch(sketch, {
-  dimensions: [5, 3.5],
-  units: "in",
+  dimensions: [152.4, 152.4], // 6x6in
+  units: "mm",
   pixelsPerInch: 300,
   scaleToView: true
 });
