@@ -12,7 +12,8 @@ const configDefaults = {
   arcSteps: 50,
   arcLength: 1,
   fillLength: 1,
-  t: 0 // for animation
+  t: 0, // for animation,
+  randomizeShellLines: false
 };
 
 const UV_ORIGIN = [0.5, 0.5, 0.5];
@@ -30,7 +31,8 @@ export default function createSphere(shellConfig) {
     amplitude,
     seed,
     fillLength,
-    t
+    t,
+    randomizeShellLines
   } = {
     ...configDefaults,
     ...shellConfig
@@ -45,8 +47,19 @@ export default function createSphere(shellConfig) {
     const shellRadius = 0.5; // half of UV space between 0 and 1
 
     const shellLinesCount = Math.ceil(shellLines * fillLength);
+
+    let shellLineDepths = [];
     for (let i = 1; i < shellLinesCount; i++) {
-      const depth = lerp(0.5 - shellRadius, 0.5 + shellRadius, i / shellLines);
+      let depth;
+      if (randomizeShellLines) {
+        depth = lerp(0.5 - shellRadius, 0.5 + shellRadius, random.value());
+      } else {
+        depth = lerp(0.5 - shellRadius, 0.5 + shellRadius, i / shellLines);
+      }
+      shellLineDepths.push(depth);
+    }
+
+    shellLineDepths.forEach(depth => {
       const arcLineRadius = Math.sqrt(
         Math.pow(shellRadius, 2) - Math.pow(shellRadius - depth, 2)
       );
@@ -75,7 +88,7 @@ export default function createSphere(shellConfig) {
       });
 
       shellLines3D.push(noisyArcLine3d);
-    }
+    });
 
     const rotatedShellLines3D = rotate3DLines(
       shellLines3D,
