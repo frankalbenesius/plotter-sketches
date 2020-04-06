@@ -3,8 +3,7 @@ import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import { lerp } from "canvas-sketch-util/math";
 import random from "canvas-sketch-util/random";
-import { settings, logSeed } from "../../../util";
-import createNoisyLines from "../../util/createNoisyLines";
+import { settings, logSeed, createNoisyLines } from "../../../util";
 
 const sketch = ({ width, height }) => {
   logSeed();

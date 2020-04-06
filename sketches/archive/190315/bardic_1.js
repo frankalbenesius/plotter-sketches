@@ -8,9 +8,9 @@ import {
   settings,
   distanceBetweenPoints,
   createGrid,
-  logSeed
+  logSeed,
+  createNoisyLines
 } from "../../../util";
-import createNoisyLines from "../../util/createNoisyLines";
 
 const sketch = ({ width, height }) => {
   logSeed("368004");
