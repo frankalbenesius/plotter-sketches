@@ -27,11 +27,23 @@ const sketch = ({ width, height }) => {
     renderPolylines(lines, {
       ...props,
       lineWidth: 3,
-      foreground: "#00a8cc",
-      background: "#005082",
+      foreground: "#d8ebb5",
+      background: "#639a67",
     });
 };
 
+/*
+purple & pink
+      foreground: "#fe346e",
+      background: "#512b58",
+orange
+      foreground: "#f2a51a",
+      background: "#ea6227",
+green
+      foreground: "#d8ebb5",
+      background: "#639a67",
+*/
+
 canvasSketch(sketch, {
-  dimensions: [2560, 1600],
+  dimensions: [3840, 2160],
 });
