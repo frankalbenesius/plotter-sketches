@@ -2,10 +2,10 @@ import canvasSketch from "canvas-sketch";
 import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
-import createGrid from "../../util/createGrid";
+import createGrid from "../../../util/createGrid";
 import { lerp, clamp } from "canvas-sketch-util/math";
-import logSeed from "../../util/logSeed";
-import distanceBetweenPoints from "../../util/distanceBetweenPoints";
+import logSeed from "../../../util/logSeed";
+import distanceBetweenPoints from "../../../util/distanceBetweenPoints";
 import { settings } from "../../../util";
 
 const sketch = ({ width, height }) => {
@@ -16,7 +16,7 @@ const sketch = ({ width, height }) => {
 
   const cols = 140 * 0.8;
   const rows = 110 * 0.8;
-  const points = createGrid(cols, rows).map(point => {
+  const points = createGrid(cols, rows).map((point) => {
     const [u, v] = point;
     const noise = random.noise2D(u, v, 5, 3);
     const clampVal = (u + v) * 0.3;
@@ -26,9 +26,9 @@ const sketch = ({ width, height }) => {
     return {
       position: [
         lerp(lerpMargin, width - lerpMargin, u + posNoise * shift),
-        lerp(lerpMargin, height - lerpMargin, v + posNoise * shift)
+        lerp(lerpMargin, height - lerpMargin, v + posNoise * shift),
       ],
-      noise
+      noise,
     };
   });
 
@@ -52,7 +52,7 @@ const sketch = ({ width, height }) => {
 
   // const box = [margin, margin, width - margin, height - margin];
   // lines = clipPolylinesToBox(lines, box);
-  return props => renderPolylines(lines, props);
+  return (props) => renderPolylines(lines, props);
 };
 
 canvasSketch(sketch, settings.large);

@@ -6,14 +6,12 @@ import { createGrid, logSeed, settings } from "../../../util";
 import { lerp, clamp } from "canvas-sketch-util/math";
 
 const sketch = ({ width, height }) => {
-  logSeed("40730");
-
   let lines = [];
-  const margin = Math.min(width, height) * 0.05;
+  const margin = Math.min(width, height) * 0.025;
 
-  const cols = 180;
+  const cols = 120;
   const rows = Math.round(cols * (11 / 14));
-  const points = createGrid(cols, rows).map(point => {
+  const points = createGrid(cols, rows).map((point) => {
     const [u, v] = point;
     const noise = random.noise2D(u, v, 3, 1);
     const posNoise = clamp(noise, -0.3, 0.3);
@@ -21,9 +19,9 @@ const sketch = ({ width, height }) => {
     return {
       position: [
         lerp(lerpMargin, width - lerpMargin, u + posNoise * 0.02),
-        lerp(lerpMargin, height - lerpMargin, v + posNoise * 0.06)
+        lerp(lerpMargin, height - lerpMargin, v + posNoise * 0.06),
       ],
-      noise
+      noise,
     };
   });
 
@@ -39,6 +37,7 @@ const sketch = ({ width, height }) => {
     lines.push(columnLine);
   }
 
+  // horizontal lines
   for (let r = 0; r < rows; r++) {
     let rowLine = [];
     for (let c = 0; c < cols; c++) {
@@ -53,7 +52,7 @@ const sketch = ({ width, height }) => {
 
   const box = [margin, margin, width - margin, height - margin];
   lines = clipPolylinesToBox(lines, box);
-  return props => renderPolylines(lines, props);
+  return (props) => renderPolylines(lines, props);
 };
 
-canvasSketch(sketch, settings.large);
+canvasSketch(sketch, settings.postcard);
