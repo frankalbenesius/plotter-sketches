@@ -3,23 +3,35 @@ import { renderPolylines } from "canvas-sketch-util/penplot";
 import { clipPolylinesToBox } from "canvas-sketch-util/geometry";
 import random from "canvas-sketch-util/random";
 import { lerp } from "canvas-sketch-util/math";
-import { settings, createSphere, createGrid } from "../../util";
+import { settings, createSphere, createGrid, logSeed } from "../../util";
 
 const sketch = ({ width, height }) => {
-  let lines = [];
-  const margin = height * 0.05;
+  logSeed("160500");
 
-  createGrid(7, 5).map(([u, v]) => {
+  let lines = [];
+  const margin = 1;
+
+  const centers = [
+    [0, 0],
+    [1, 0],
+    [0.5, 0.25],
+    [0, 0.5],
+    [1, 0.5],
+    [0.5, 0.75],
+    [0, 1],
+    [1, 1],
+  ];
+  centers.map(([u, v]) => {
     const x = lerp(margin, width - margin, u);
     const y = lerp(margin, height - margin, v);
     lines.push(
       ...createSphere({
         center: [x, y],
         radius: height * 0.1,
-        frequency: 1,
-        amplitude: 2,
-        shellLines: 10,
-        arcSteps: 200,
+        frequency: 0,
+        amplitude: 0,
+        shellLines: 16,
+        arcSteps: 140,
         arcLength: 1,
         fillLength: 1,
       })
@@ -35,7 +47,7 @@ const sketch = ({ width, height }) => {
 };
 
 canvasSketch(sketch, {
-  dimensions: [5.5, 3.5],
+  dimensions: [4, 6],
   units: "in",
   pixelsPerInch: 300,
   scaleToView: true,
