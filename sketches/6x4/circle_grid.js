@@ -9,10 +9,11 @@ import createCube from "../../util/createCube";
 const sketch = ({ width, height }) => {
   let lines = [];
 
-  const margin = 0.5;
-  const rows = 48;
+  const margin = 0.25;
+  const rows = 60;
   const freq = 3;
   const amp = 1;
+  const size = 0.029;
 
   const cols = Math.round(rows * 1.5);
   createGrid(cols, rows).map(([u, v]) => {
@@ -21,7 +22,9 @@ const sketch = ({ width, height }) => {
 
     const noise = random.noise2D(u, v, freq, amp);
 
-    lines.push(createCircleLine(x + noise * margin * 0.15, y, 0.02));
+    lines.push(
+      createCircleLine(x + noise * margin * 0.2, y + noise * margin * 0.2, size)
+    );
   });
 
   // Clip all the lines to a margin

@@ -7,14 +7,14 @@ import { lerp, clamp } from "canvas-sketch-util/math";
 
 const sketch = ({ width, height }) => {
   let lines = [];
-  const margin = Math.min(width, height) * 0.025;
+  const margin = Math.min(width, height) * -0.1;
 
-  const cols = 100;
-  const freq = 2;
+  const cols = 160;
+  const freq = 5;
   const amp = 2;
-  const clampRatio = 0.2;
-  const xShiftRatio = 1;
-  const yShiftRatio = 1;
+  const clampRatio = 0.05;
+  const xShiftRatio = 0.5;
+  const yShiftRatio = 0.5;
 
   const rows = Math.round(cols * (4 / 6));
   const points = createGrid(cols, rows).map((point) => {
